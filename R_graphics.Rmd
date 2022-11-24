@@ -1,5 +1,5 @@
 ---
-title: "Uebung_2"
+title: "R_graphics"
 author: "VB"
 date: "11/5/2019"
 output:
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Balkendiagramm
 
 ```{r, echo = T, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Balkendiagramm", results = 'asis', out.width = '80%' }
-df <- read.table('/Users/vitaly/Lehre/WS1920/Beuth/2_Deskriptive_Statistik/Data/titanic.csv', sep = ',', header = TRUE)
+df <- read.table('http://belik.userpage.fu-berlin.de/beuth/titanic.csv', sep = ',', header = TRUE)
 df$Index <- df$X
 d_new <- df[c("Index","survived","pclass","sex","age","deck","fare","alone")]
 library(ggplot2)
