@@ -1,0 +1,204 @@
+---
+title: "Uebung_2"
+author: "VB"
+date: "11/5/2019"
+output:
+  html_document:
+    depth: 3
+    fig_caption: yes
+    highlight: tango
+    number_sections: yes
+    theme: paper
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Graphiken
+
+## Balkendiagramm
+
+```{r, echo = T, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Balkendiagramm", results = 'asis', out.width = '80%' }
+df <- read.table('/Users/vitaly/Lehre/WS1920/Beuth/2_Deskriptive_Statistik/Data/titanic.csv', sep = ',', header = TRUE)
+df$Index <- df$X
+d_new <- df[c("Index","survived","pclass","sex","age","deck","fare","alone")]
+library(ggplot2)
+ggplot(d_new, aes(x = pclass)) +
+geom_bar(fill = "#77d5e6") +
+theme_classic() + theme(text = element_text(size = 20))
+```
+
+
+## Balkendiagramm (relative Häufigkeit)
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Balkendiagramm (relative Häufigkeit)", results = 'asis', out.width = '80%' }
+
+ggplot(d_new, aes(x = pclass)) +  
+geom_bar(aes(y = (..count..)/sum(..count..)), fill = "#77d5e6") +
+  theme_classic() + theme(text = element_text(size = 20))
+```
+
+# Komponenten-Balkendiagramm
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Komponenten-Balkendiagramm", results = 'asis', out.width = '80%' }
+library(ggplot2)
+ggplot(d_new, aes(x = pclass, fill = sex)) +
+geom_bar() +
+theme_classic() + theme(text = element_text(size = 20))
+```
+
+# Komponenten-Balkendiagramm (relative Häufigkeit)
+
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Komponenten-Balkendiagramm (relative Häufigkeit)", results = 'asis', out.width = '80%' }
+library(ggplot2)
+ggplot(d_new, aes(x = pclass, fill = sex)) +
+geom_bar(position = "fill") +
+theme_classic() + theme(text = element_text(size = 20))
+```
+
+# Komponenten-Balkendiagramm (relative Häufigkeit) (1)
+
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Komponenten-Balkendiagramm (relative Häufigkeit)", results = 'asis', out.width = '80%' }
+library(ggplot2)
+ggplot(d_new, aes(x = pclass, fill = sex)) +
+geom_bar(position = "fill") +
+theme_classic() + theme(text = element_text(size = 20)) + 
+coord_flip()
+```
+
+# Daten auf der Zahlengerade
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Daten auf der Zahlengerade", results = 'asis', out.width = '80%' }
+library(ggplot2)
+ggplot(d_new, aes(x = age, y = 1)) +
+geom_point(fill = "#77d5e6") +
+#scale_y_continuous(expand=c(0,0)) + 
+theme_classic() +
+theme(text = element_text(size = 20)) +
+#theme(legend.position = "none") 
+#ylim(c(0.5,1.5)) +
+theme(legend.position = "none",
+        panel.grid = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+        #panel.background = element_blank())
+#theme_void() 
+```
+
+
+
+# Histogramm
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Histogramm", results = 'asis', out.width = '80%' }
+ggplot(d_new, aes(x = age)) + 
+  geom_histogram(breaks=seq(0, 100, by = 10), col="grey", fill = "#77d5e6", alpha = 1.0) + 
+  labs(title="Histogram for Age", x="Age", y="Count") + 
+  xlim(c(0,100)) +
+  theme_classic() + theme(text = element_text(size = 20))
+```
+
+# Histogramm (relative Häufigkeit)
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Histogramm (relative Häufigkeit)", results = 'asis', out.width = '80%' }
+ggplot(d_new, aes(x = age)) + 
+  geom_histogram(aes(y =..density..), breaks=seq(0, 100, by = 10), col="grey", fill = "#77d5e6", alpha = 1.0) + 
+  labs(title="Histogram for Age", x="Age", y="Count") + 
+  xlim(c(0,100)) +
+  theme_classic() + theme(text = element_text(size = 20))
+```
+
+# Histogramm (relative Häufigkeit) (2)
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Histogram fare", results = 'asis', out.width = '80%' }
+ggplot(d_new, aes(x = fare)) + 
+  geom_histogram(aes(y =..density..), breaks=seq(0, 100, by = 10), col="grey", fill = "#77d5e6", alpha = 1.0) + 
+  labs(title="Histogram for fare", x="fare", y="Count") + 
+  #xlim(c(0,100)) +
+  theme_classic() + theme(text = element_text(size = 20))
+```
+
+# Gruppenbildung
+
+## Klassenbreite $b$ nach von Sturges
+$$
+b=\frac{V}{1+3.32\cdot\lg n}\approx\frac{V}{5\lg n}
+$$
+
+$n$ - der Stichprobenumfang (Anzahl der Messwerte)
+
+$V$ - die Variationsbreite (Spannweite)
+
+$\lg n$ - Zehnerlogarithmus von $n$
+
+# Histogramm (relative Häufigkeit) (3)
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Histogram fare", results = 'asis', out.width = '80%' }
+ggplot(d_new, aes(x = fare)) + 
+  geom_histogram(aes(y =..density..), breaks=seq(0, 100, by = 5), col="grey", fill = "#77d5e6", alpha = 1.0) + 
+  labs(title="Histogram for fare", x="fare", y="Count") + 
+  #xlim(c(0,100)) +
+  theme_classic() + theme(text = element_text(size = 20))
+```
+
+
+# Variationsbreite (Range)
+
+\large
+$$
+V_x=\max(x)-\min(x)
+$$
+
+# (arithmetischer) Mittelwert
+\large
+$$
+\bar{x}=\frac{1}{N}\sum_{i=1}^Nx_i
+$$
+
+
+# Histogramm (relative Häufigkeit) (3)
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Histogram fare", results = 'asis', out.width = '80%' }
+ggplot(d_new, aes(x = fare)) + 
+  geom_histogram(aes(y =..density..), breaks=seq(0, 100, by = 5), col="grey", fill = "#77d5e6", alpha = 1.0) + 
+  labs(title="Histogram for fare", x="fare", y="Count") + 
+  #xlim(c(0,100)) +
+  theme_classic() + theme(text = element_text(size = 20))+
+  geom_vline(xintercept = mean(d_new$fare), colour = "red")+
+geom_vline(xintercept = median(d_new$fare), colour = "magenta")
+```
+
+
+
+# Kumulative Verteilung
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Kumulative Verteilung", results = 'asis', out.width = '80%' }
+x = sort(d_new$age)
+y = c(1:length(x))/length(x)
+plot(x,y, xlab = "age", ylab = "cpdf", cex = 1.0, cex.lab = 2.0)
+abline(h=0.25, col="red")
+abline(v=20.12, col="blue")
+abline(h=0.75, col="red")
+abline(v=38.2, col="blue")
+```
+
+# Boxplot
+
+\center
+\includegraphics[width=0.7\textwidth]{Figures/boxplot.pdf}
+
+# Boxplot
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Boxplot", results = 'asis', out.width = '80%' }
+library(ggplot2)
+ggplot(d_new, aes(y = age)) +
+geom_boxplot(fill = "#77d5e6") +
+theme_classic() + theme(text = element_text(size = 20))
+```
+
+# Boxplot
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE, size="tiny", fig.align = "center", fig.cap = "Boxplot", results = 'asis', out.width = '80%' }
+library(ggplot2)
+ggplot(d_new, aes(x = sex, y = age)) +
+geom_boxplot(fill = "#77d5e6") +
+theme_classic() + theme(text = element_text(size = 20))
+```
